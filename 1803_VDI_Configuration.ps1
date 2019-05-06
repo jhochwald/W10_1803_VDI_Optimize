@@ -5,14 +5,14 @@
 <#
       .SYNOPSIS
       Microsoft Windows 1803  VDI Cleanup Script
-	
+
       .DESCRIPTION
       Microsoft Windows 1803  VDI Cleanup Script
       based on white paper: "Optimizing Windows 10, Build 1803, for a Virtual Desktop Infrastructure (VDI) role"
-	
+
       .EXAMPLE
       PS C:\> .\1803_VDI_Configuration.ps1
-	
+
       .NOTES
       - TITLE:          Microsoft Windows 1803  VDI Cleanup Script
       - AUTHORED BY:    Robert M. Smith, and Tim Muessig
@@ -40,8 +40,8 @@
       This script is dependant on three elements:
       LGPO Settings folder, applied with the LGPO.exe Microsoft app
 
-      the following is the list of almost all the UWP application packages that can be removed with PowerShell, interactively.  
-      The Store and a few others, such as Wallet, were left off intentionally.  Though it is possible to remove the Store app, 
+      the following is the list of almost all the UWP application packages that can be removed with PowerShell, interactively.
+      The Store and a few others, such as Wallet, were left off intentionally.  Though it is possible to remove the Store app,
       it is nearly impossible to get it back.  Please review the lists below and comment out or remove references to packages that you do not want to remove.
 
       .LINK https://social.technet.microsoft.com/wiki/contents/articles/7703.powershell-running-executables.aspx
@@ -96,7 +96,7 @@ if ($AppxPackage.Count -gt 0)
    foreach ($Item in $AppxPackage)
    {
       $Package = "*$Item*"
-		
+
       try
       {
          $null = (Get-AppxPackage | Where-Object -FilterScript {
@@ -107,7 +107,7 @@ if ($AppxPackage.Count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -117,13 +117,13 @@ if ($AppxPackage.Count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
-		
+
       try
       {
          $null = (Get-AppxPackage -AllUsers | Where-Object -FilterScript {
@@ -134,7 +134,7 @@ if ($AppxPackage.Count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -144,13 +144,13 @@ if ($AppxPackage.Count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
-		
+
       try
       {
          $null = (Get-AppxProvisionedPackage -Online | Where-Object -FilterScript {
@@ -161,7 +161,7 @@ if ($AppxPackage.Count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -171,10 +171,10 @@ if ($AppxPackage.Count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
    }
@@ -257,7 +257,7 @@ if ($SchTasksList.count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -267,10 +267,10 @@ if ($SchTasksList.count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
    }
@@ -361,7 +361,7 @@ if ($DisableAutologgers.count -gt 0)
    foreach ($Item in $DisableAutologgers)
    {
       Write-Verbose -Message ('Processing {0}' -f $Item)
-		
+
       try
       {
          $null = (New-ItemProperty -Path $Item -Name 'Start' -PropertyType 'DWORD' -Value '0' -Force -ErrorAction SilentlyContinue)
@@ -370,7 +370,7 @@ if ($DisableAutologgers.count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -380,10 +380,10 @@ if ($DisableAutologgers.count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
    }
@@ -436,7 +436,7 @@ if ($ServicesToDisable.count -gt 0)
    foreach ($Item in $ServicesToDisable)
    {
       Write-Verbose -Message ('Processing {0}' -f $Item)
-		
+
       try
       {
          $null = (New-ItemProperty -Path $Item -Name 'Start' -PropertyType 'DWORD' -Value '4' -Force -ErrorAction Stop)
@@ -445,7 +445,7 @@ if ($ServicesToDisable.count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -455,10 +455,10 @@ if ($ServicesToDisable.count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
    }
@@ -509,7 +509,7 @@ if ($DiskCleanupSettings.count -gt 0)
    foreach ($Item in $DiskCleanupSettings)
    {
       Write-Verbose -Message ('Processing {0}' -f $Item)
-		
+
       try
       {
          $null = (New-ItemProperty -Path $Item -Name 'StateFlags0011' -PropertyType 'DWORD' -Value '2' -Force -ErrorAction Stop)
@@ -518,7 +518,7 @@ if ($DiskCleanupSettings.count -gt 0)
       {
          # get error record
          [Management.Automation.ErrorRecord]$e = $_
-			
+
          # retrieve information about runtime error
          $info = [PSCustomObject]@{
             Exception = $e.Exception.Message
@@ -528,10 +528,10 @@ if ($DiskCleanupSettings.count -gt 0)
             Line      = $e.InvocationInfo.ScriptLineNumber
             Column    = $e.InvocationInfo.OffsetInLine
          }
-			
+
          # output information. Post-process collected info, and log info (optional)
          $info | Out-String | Write-Verbose
-			
+
          Write-Warning -Message $e.Exception.Message -ErrorAction Continue
       }
    }
